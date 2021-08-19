@@ -1,0 +1,98 @@
+import vendor from "@/mock/vendor";
+import purchase_status from "@/mock/purchase_status";
+import user from "@/mock/user";
+import department from "@/mock/department";
+
+export default [
+    {},
+    {
+        "id": 1,
+        "vendor_id": 1,
+        "vendor": vendor[1],
+        "status_id": purchase_status[1],
+        "status": purchase_status[1],
+        "ship_by": "Parleynet",
+        "created_by": user[4],
+        "requested_by": user[5],
+        "requested_by_department": department[3],
+        "designed_receiver_id": user[6],
+        "delivery_forecast": "Mon Aug 09 2021 11:56:51 GMT-0300 (Horário Padrão de Brasília)",
+        "created_by_department": user[4].department,
+        "parent_id": null,
+        "record_type": "request",
+        "total_cost": 697.49,
+        "requested_at": "Mon Aug 09 2021 12:18:22 GMT-0300 (Horário Padrão de Brasília)"
+    },
+    {
+        "id": 2,
+        "vendor_id": 4,
+        "vendor": vendor[4],
+        "status_id": purchase_status[4],
+        "status": purchase_status[4],
+        "ship_by": "Datagen",
+        "created_by": user[2],
+        "requested_by": user[5],
+        "requested_by_department": department[1],
+        "designed_receiver_id": user[1],
+        "delivery_forecast": "Mon Aug 09 2021 11:56:51 GMT-0300 (Horário Padrão de Brasília)",
+        "created_by_department": user[2].department,
+        "parent_id": null,
+        "record_type": "request",
+        "total_cost": 715.74,
+        "requested_at": "Mon Aug 09 2021 12:18:22 GMT-0300 (Horário Padrão de Brasília)"
+    },
+    {
+        "id": 3,
+        "vendor_id": 4,
+        "vendor": vendor[4],
+        "status_id": purchase_status[5],
+        "status": purchase_status[5],
+        "ship_by": "Corecom",
+        "created_by": user[2],
+        "requested_by": user[6],
+        "requested_by_department": department[2],
+        "designed_receiver_id": user[4],
+        "delivery_forecast": "Mon Aug 09 2021 11:56:51 GMT-0300 (Horário Padrão de Brasília)",
+        "created_by_department": user[2].department,
+        "parent_id": null,
+        "record_type": "request",
+        "total_cost": 101.66,
+        "requested_at": "Mon Aug 09 2021 12:18:22 GMT-0300 (Horário Padrão de Brasília)"
+    },
+    {
+        "id": 4,
+        "vendor_id": 4,
+        "vendor": vendor[4],
+        "status_id": purchase_status[2],
+        "status": purchase_status[2],
+        "ship_by": "Phuel",
+        "created_by": user[5],
+        "requested_by": user[3],
+        "requested_by_department": department[3],
+        "designed_receiver_id": user[4],
+        "delivery_forecast": "Mon Aug 09 2021 11:56:51 GMT-0300 (Horário Padrão de Brasília)",
+        "created_by_department": user[5].department,
+        "parent_id": null,
+        "record_type": "request",
+        "total_cost": 503.32,
+        "requested_at": "Mon Aug 09 2021 12:18:22 GMT-0300 (Horário Padrão de Brasília)"
+    },
+    {
+        "id": 5,
+        "vendor_id": 1,
+        "vendor": vendor[1],
+        "status_id": purchase_status[6],
+        "status": purchase_status[6],
+        "ship_by": "Bedder",
+        "created_by": user[4],
+        "requested_by": user[4],
+        "requested_by_department": department[3],
+        "designed_receiver_id": user[5],
+        "delivery_forecast": "Mon Aug 09 2021 11:56:51 GMT-0300 (Horário Padrão de Brasília)",
+        "created_by_department": user[4].department,
+        "parent_id": null,
+        "record_type": "request",
+        "total_cost": 271.79,
+        "requested_at": "Mon Aug 09 2021 12:18:22 GMT-0300 (Horário Padrão de Brasília)"
+    }
+]
