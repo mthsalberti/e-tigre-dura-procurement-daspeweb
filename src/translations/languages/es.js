@@ -4,6 +4,7 @@ export default {
     purchaseRequest: 'Solicitud de compra',
     filters: 'Filtros',
     reload: 'Recargar',
+    loadingItems: 'Cargando articulos',
     noItems: 'No hay artículos',
     requestNumber: 'Número de solicitud',
     orderNumber: 'Número de pedido',
@@ -40,9 +41,10 @@ export default {
     toApproval: 'Para aprobación',
     save: 'Guardar',
     approve: 'Aprobar',
-    reject: 'rechazar',
+    reject: 'Rechazar',
     noInformation: 'Sin información',
     purchase: 'Compra',
+    noPurchaseItems: 'No hay artículos de compra. Por favor, haga clic en el botón de abajo y agregue.',
 
     /* Title from router path */
     '/purchase/request/draft': 'Solicitud de compra - Borrador',

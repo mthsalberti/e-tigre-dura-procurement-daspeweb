@@ -5,38 +5,22 @@
       <v-row>
         <!--first row-->
         <v-col md="3" sm="12">
-          <v-autocomplete
-              cache-items solo hide-no-data hide-details
-              :label="$t('vendor')"
-              :no-data-text="$t('noInformation')"
-          />
+          <select-vendor/>
         </v-col>
         <v-col md="9" sm="12" />
 
         <!--second row-->
         <v-col md="3" sm="12">
-          <v-autocomplete
-              cache-items solo hide-no-data hide-details
-              :label="$t('designedReceiver')"
-              :no-data-text="$t('noInformation')"
-          />
+          <select-designed-receiver/>
         </v-col>
         <v-col md="9" sm="12"/>
 
         <!--third row-->
         <v-col lg="3" sm="12">
-          <v-autocomplete
-              cache-items solo hide-no-data hide-details
-              :label="$t('requestedBy')"
-              :no-data-text="$t('noInformation')"
-          />
+          <select-user :label="$t('requestedBy')"/>
         </v-col>
         <v-col lg="3" sm="12">
-          <v-autocomplete
-              cache-items solo hide-no-data hide-details
-              :label="$t('department')"
-              :no-data-text="$t('noInformation')"
-          />
+          <select-department/>
         </v-col>
         <v-col md="6" sm="12"/>
 
@@ -90,27 +74,53 @@
       <!--view of items-->
       <router-view />
 
-      <v-row class="pl-md-3 pb-md-3">
-        <v-btn class="mr-md-2" v-text="$t('sendToOrder')" color="info"/>
-        <v-btn class="mr-md-2" v-text="$t('saveDraft')" color="success"/>
-        <v-btn class="mr-md-2" v-text="$t('cancel')" color="warning" outlined @click="() => $router.go(-1)"/>
-      </v-row>
+      <buttons-action-form
+        class="pl-md-3 pb-md-3"
+        :save-label="$t('saveDraft')"
+        :cancel-label="$t('cancel')"
+        hide-reject-button
+        @clickSave="handleClickSavePurchaseAsDraft"
+        @clickCancel="handleClickCancelPurchase"
+      >
+        <v-btn class="mr-md-2" v-text="$t('sendToOrder')" color="info" @click="handleClickSendPurchaseToOrder"/>
+      </buttons-action-form>
     </v-form>
   </filling>
 </template>
 
 <script>
 import filling from "@/components/app/filling";
+import SelectVendor from "@/components/fields/SelectVendor";
+import SelectDesignedReceiver from "@/components/fields/SelectDesignedReceiver";
+import SelectUser from "@/components/fields/SelectUser";
+import SelectDepartment from "@/components/fields/SelectDepartment";
+import ButtonsActionForm from "@/components/buttons/ButtonsActionForm";
 
 export default {
   name: "ViewFormPurchaseRequest",
+  components: {
+    filling,
+    SelectVendor,
+    SelectDesignedReceiver,
+    SelectUser,
+    SelectDepartment,
+    ButtonsActionForm
+  },
   data(){
     return {
       deliveryForecastValue: ''
     }
   },
-  components: {
-    filling
+  methods: {
+    handleClickSavePurchaseAsDraft(){
+      console.log('tá na handleClickSavePurchaseAsDraft')
+    },
+    handleClickCancelPurchase(){
+      this.$router.back()
+    },
+    handleClickSendPurchaseToOrder(){
+      console.log('tá na handleClickSendPurchaseToOrder')
+    }
   }
 }
 </script>

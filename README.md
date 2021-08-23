@@ -1,4 +1,4 @@
-# etigre-dura-procurement
+# e-tigre-dura-procurement-daspeweb
 
 ## Project setup
 ```

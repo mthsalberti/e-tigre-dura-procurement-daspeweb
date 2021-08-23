@@ -4,6 +4,7 @@ export default {
     purchaseRequest: 'Purchase request',
     filters: 'Filters',
     reload: 'Reload',
+    loadingItems: 'Loading items',
     noItems: 'No items',
     requestNumber: 'Request number',
     orderNumber: 'Order number',
@@ -41,9 +42,10 @@ export default {
     toApproval: 'To approval',
     save: 'Save',
     approve: 'Approve',
-    reject: 'reject',
+    reject: 'Reject',
     noInformation: 'No information',
     purchase: 'Purchase',
+    noPurchaseItems: 'No purchase items. Please, click on button below and add.',
 
     /* Title from router path */
     '/purchase/request/draft': 'Purchase request - Draft',

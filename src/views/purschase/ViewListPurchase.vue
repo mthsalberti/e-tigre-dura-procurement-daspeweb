@@ -1,7 +1,7 @@
 <script>
-import ListViewPurchase from "@/components/purchase/ListViewPurchase";
+import ListViewPurchase from "@/components/lists/ListViewPurchase";
 import {routeConf} from "@/router";
-import purchase from "@/mock/purchase";
+import FilterPurchase from "@/components/filters/FilterPurchase";
 
 export default {
   name: "ViewListPurchase",
@@ -40,10 +40,11 @@ export default {
           value: 'total_cost'
         },
       ],
-      items: purchase.filter(p => p !== {}),
       linkActionButton: {
         path: `${routeConf.requestPath}new/items`
-      }
+      },
+      path: 'purchase',
+      componentFilter: FilterPurchase
     }
   }
 }

@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vue from 'vue';
 import user from "@/mock/user";
 import ViewFormPurchaseRequest from "@/views/purschase/request/ViewFormPurchaseRequest";
-import ViewPurchaseItem from "@/views/purchaseItem/ViewPurchaseItem";
+import ViewListPurchaseItem from "@/views/purchaseItem/ViewListPurchaseItem";
 
 /* conf */
 export let routeConf = {
@@ -50,7 +50,7 @@ const routes = [
             {
                 path: 'items',
                 name: `${routeConf.requestName}newItems`,
-                component: ViewPurchaseItem,
+                component: ViewListPurchaseItem,
                 meta: {
                     requiredAuth: true,
                     requiredProfiles: ['admin', 'common']

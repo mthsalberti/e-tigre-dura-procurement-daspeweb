@@ -1,0 +1,6 @@
+export const ITEMS = 'setItems'
+export const SELECTED_ITEM = 'setSelectedItem'
+export const LOADING = 'setLoading'
+export const STATE = 'setState'
+export const ADD_ITEM = 'addItem'
+export const REMOVE_ITEM = 'removeItem'
