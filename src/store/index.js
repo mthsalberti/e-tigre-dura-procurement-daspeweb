@@ -8,6 +8,11 @@ Vue.use(Vuex);
 
 import purchaseStore from "@/store/modules/purchaseStore";
 import purchaseItemStore from "@/store/modules/purchaseItemStore";
+import departmentStore from "@/store/modules/departmentStore";
+import userStore from "@/store/modules/userStore";
+import vendorStore from "@/store/modules/vendorStore";
+import purchaseStatusStore from "@/store/modules/purchaseStatusStore";
+
 export default new Vuex.Store({
     state: {},
     getters: {},
@@ -15,6 +20,10 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         purchaseStore,
-        purchaseItemStore
+        vendorStore,
+        purchaseStatusStore,
+        departmentStore,
+        purchaseItemStore,
+        userStore
     }
 })

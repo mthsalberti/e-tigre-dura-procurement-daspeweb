@@ -10,13 +10,13 @@
       <v-text-field :placeholder="$t('orderNumber')" solo hide-details/>
     </v-col>
     <v-col md="2" sm="12">
-      <select-vendor/>
+      <select-field :label="$t('vendor')" store-path="vendor" item-text="name"/>
     </v-col>
     <v-col md="2" sm="12">
-      <select-department/>
+      <select-field :label="$t('department')" store-path="department"/>
     </v-col>
     <v-col md="2" sm="12">
-      <select-purchase-status/>
+      <select-field :label="$t('status')" store-path="purchaseStatus"/>
     </v-col>
     <v-col md="1" sm="12">
       <v-btn class="py-5" depressed small color="secondary" @click="handleClickToFilter">
@@ -27,16 +27,12 @@
 </template>
 
 <script>
-import SelectVendor from "@/components/fields/SelectVendor";
-import SelectDepartment from "@/components/fields/SelectDepartment";
-import SelectPurchaseStatus from "@/components/fields/SelectPurchaseStatus";
+import SelectField from "@/components/fields/SelectField";
 
 export default {
   name: "FilterPurchase",
   components: {
-    SelectVendor,
-    SelectDepartment,
-    SelectPurchaseStatus
+    SelectField
   },
   methods: {
     handleClickToFilter(){}

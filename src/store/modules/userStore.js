@@ -1,10 +1,10 @@
-import {ITEMS, SELECTED_ITEM, LOADING, STATE, ADD_ITEM, REMOVE_ITEM} from '../types'
+import {ITEMS, SELECTED_ITEM, LOADING, STATE} from '../types'
 import {defaultState} from "@/store/state";
 import Request from "plugin-tigre-request";
 
 export default {
     namespaced: true,
-    state: defaultState(),
+    state: defaultState({isLoading: false}),
     getters: {
         getItems(state) {
             return state.items
@@ -28,28 +28,27 @@ export default {
         },
         [STATE](state, newState) {
             state = newState
-        },
-        [ADD_ITEM](state, item){
-            state.items.push(item)
-        },
-        [REMOVE_ITEM](state, item){
-            console.log('item', item)
-            state.items.splice(state.items.indexOf(item), 1)
         }
     },
     actions: {
         clearState({commit}){
             commit(STATE, defaultState())
         },
-        async handleGetData({commit}, payload = {}) {
+        async handleSearch({commit}, payload = {}) {
             try {
-                console.log(payload)
-                commit(LOADING, true)
-                let response = await Request({
-                    baseUrl: process.env.VUE_APP_BASE_URL,
-                    path: '/api/user'
-                })
-                commit(ITEMS, response.data)
+                let {value} = payload
+                console.log('value', value)
+                if (value) {
+                    commit(LOADING, true)
+                    let response = await Request({
+                        baseUrl: process.env.VUE_APP_BASE_URL,
+                        path: '/api/user'
+                    })
+                    commit(ITEMS, response.data)
+                }
+                else {
+                    commit(ITEMS, [])
+                }
             }
             catch (e) {
                 console.error('error on get', e)
@@ -57,12 +56,6 @@ export default {
             finally {
                 commit(LOADING, false)
             }
-        },
-        handleAddItem({commit}, payload) {
-            commit(ADD_ITEM, payload.item)
-        },
-        handleRemoveItem({commit}, payload) {
-            commit(REMOVE_ITEM, payload.item)
         }
     }
 }

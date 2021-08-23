@@ -1,8 +1,10 @@
-export const defaultState = () => {
+export const defaultState = (overrideObj = {}) => {
     return {
-        items: [],
-        selectedItem: {},
-        isLoading: true,
-        apiPath: ''
+        ...{
+            items: [],
+            selectedItem: {},
+            isLoading: true
+        },
+        ...overrideObj
     }
 }

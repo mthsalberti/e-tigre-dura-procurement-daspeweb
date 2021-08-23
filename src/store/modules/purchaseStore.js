@@ -18,8 +18,8 @@ export default {
         },
     },
     mutations: {
-        [ITEMS](state, payload) {
-            state.items = payload.items
+        [ITEMS](state, items) {
+            state.items = items
         },
         [SELECTED_ITEM](state, payload) {
             state.selectedItem = payload.selectedItem

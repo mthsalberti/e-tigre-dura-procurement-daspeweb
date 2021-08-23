@@ -5,22 +5,22 @@
       <v-row>
         <!--first row-->
         <v-col md="3" sm="12">
-          <select-vendor/>
+          <select-field :label="$t('vendor')" store-path="vendor"/>
         </v-col>
         <v-col md="9" sm="12" />
 
         <!--second row-->
         <v-col md="3" sm="12">
-          <select-designed-receiver/>
+          <select-field :label="$t('designedReceiver')" store-path="user" item-text="name"/>
         </v-col>
         <v-col md="9" sm="12"/>
 
         <!--third row-->
         <v-col lg="3" sm="12">
-          <select-user :label="$t('requestedBy')"/>
+          <select-field :label="$t('requestedBy')" store-path="user" item-text="name"/>
         </v-col>
         <v-col lg="3" sm="12">
-          <select-department/>
+          <select-field :label="$t('department')" store-path="department"/>
         </v-col>
         <v-col md="6" sm="12"/>
 
@@ -90,20 +90,14 @@
 
 <script>
 import filling from "@/components/app/filling";
-import SelectVendor from "@/components/fields/SelectVendor";
-import SelectDesignedReceiver from "@/components/fields/SelectDesignedReceiver";
-import SelectUser from "@/components/fields/SelectUser";
-import SelectDepartment from "@/components/fields/SelectDepartment";
+import SelectField from "@/components/fields/SelectField";
 import ButtonsActionForm from "@/components/buttons/ButtonsActionForm";
 
 export default {
   name: "ViewFormPurchaseRequest",
   components: {
     filling,
-    SelectVendor,
-    SelectDesignedReceiver,
-    SelectUser,
-    SelectDepartment,
+    SelectField,
     ButtonsActionForm
   },
   data(){

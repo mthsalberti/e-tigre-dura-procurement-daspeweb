@@ -70,7 +70,7 @@ export default {
       },
       isLoading(_, getters) {
         return getters[this.getPathStore('getLoading')]
-      }
+      },
     }),
   },
   methods: {

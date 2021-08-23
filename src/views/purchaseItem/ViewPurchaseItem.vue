@@ -17,7 +17,7 @@
         <v-text-field hide-details :label="$t('totalCost')" solo v-model="item.total_cost"/>
       </v-col>
       <v-col md="3" sm="12">
-        <select-department/>
+        <select-field :label="$t('department')" store-path="department" />
       </v-col>
       <v-col md="1" sm="12">
         <v-btn outlined color="#fff" @click="handleClickToRemovePurchaseItem">
@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import SelectDepartment from "@/components/fields/SelectDepartment";
+import SelectField from "@/components/fields/SelectField";
 export default {
   name: "view-purchase-item",
   components: {
-    SelectDepartment
+    SelectField
   },
   props: {
     item: {
