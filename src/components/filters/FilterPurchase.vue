@@ -4,9 +4,11 @@
       <div class="text-caption" v-text="$t('filters')"/>
     </v-col>
     <v-col md="2" sm="12">
+      <label v-text="$t('purchase')"/>
       <v-text-field :placeholder="$t('purchase')" solo hide-details v-model="purchase"/>
     </v-col>
     <v-col md="2" sm="12">
+      <label v-text="$t('orderNumber')"/>
       <v-text-field :placeholder="$t('orderNumber')" solo hide-details v-model="orderNumber"/>
     </v-col>
     <v-col md="2" sm="12">

@@ -81,6 +81,8 @@ export default {
           unit_of_measurement: null,
           unit_cost: null,
           total_cost: null,
+          department_id: null,
+          department_description: null
         }})
     },
     handleClickRemovePurchaseItem(item) {

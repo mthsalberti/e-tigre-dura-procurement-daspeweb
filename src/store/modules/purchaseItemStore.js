@@ -47,7 +47,7 @@ export default {
         clearState({commit}) {
             return commit(STATE, defaultState({isLoading: false}))
         },
-        async handleGetData({commit, state}, payload) {
+        async handleGetData({commit}, payload) {
             try {
                 commit(LOADING, true)
                 let {purchaseId} = payload
@@ -59,10 +59,10 @@ export default {
                 })
                 let response = await Request({
                     baseUrl: process.env.VUE_APP_BASE_URL,
-                    path: `/purchase_item?where=${state.filter.query()}`
+                    path: `/custom/purchase_item_from_purchase/${purchaseId}`
                 })
                 console.log('response', response)
-                commit(ITEMS, response.data.data)
+                commit(ITEMS, response.data[0])
             } catch (e) {
                 console.error('error on get', e)
             } finally {
@@ -77,6 +77,10 @@ export default {
         },
         async handleAddItems(_, payload) {
             let {items} = payload
+            items = items.map(i => {
+                delete i['department_description']
+                return i
+            })
             let response = await axios.put(`${process.env.VUE_APP_BASE_URL}/purchase_item`, items)
             return response.data
         }

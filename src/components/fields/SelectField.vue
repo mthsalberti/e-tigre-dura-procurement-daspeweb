@@ -77,7 +77,9 @@ export default {
   watch: {
     term(value) {
       clearTimeout(this.timer);
-      this.timer = setTimeout(() => this.handleSearch({value}), this.debounce)
+      this.timer = setTimeout(() => {
+        this.handleSearch({value})
+      }, 500)
     },
     selected(item){
       if (this.sendToStore) {
@@ -116,7 +118,7 @@ export default {
       if (this.sendToStore) {
         this.selected = this.selectedItem
       }
-      else if (this.initialValue ) {
+      else if (this.initialValue && this.initialValue.id !== null) {
         this.selected = this.initialValue
         this.items.push(this.initialValue)
       }

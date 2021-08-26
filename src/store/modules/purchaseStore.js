@@ -175,7 +175,7 @@ export default {
         async removeItem(_, payload) {
             try {
                 let {id} = payload
-                let response = await axios.delete(`${process.env.VUE_APP_BASE_URL}/purchase/${id}`)
+                let response = await axios.delete(`${process.env.VUE_APP_BASE_URL}/delete_purchase/${id}`)
                 console.log('delete response', response)
                 // await commit(ADD_ITEM, item)
             }
