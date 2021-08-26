@@ -17,31 +17,36 @@ export default {
         },
         {
           text: this.$t('vendor'),
-          value: 'vendor'
+          value: 'vendor_name'
         },
         {
           text: this.$t('department'),
-          value: 'requested_by_department'
+          value: 'created_by_department_description'
         },
         {
           text: `${this.$t('requestedAt')}?`,
-          value: 'requested_at'
+          value: 'created_at'
         },
         {
           text: this.$t('status'),
-          value: 'status_id'
+          value: 'status_description'
         },
         {
           text: this.$t('order'),
-          value: 'parent_id'
+          value: 'order_id'
         },
         {
           text: this.$t('value'),
           value: 'total_cost'
         },
+        {
+          text: this.$t('actions'),
+          sortable: false,
+          value: 'actions',
+        },
       ],
       linkActionButton: {
-        path: `${routeConf.requestPath}new/items`
+        path: `${routeConf.requestPath}view/new`
       },
       path: 'purchase',
       componentFilter: FilterPurchase

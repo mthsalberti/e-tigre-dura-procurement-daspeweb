@@ -34,10 +34,10 @@ const routes = [
         }
     },
 
-    // new purchase
+    // purchase
     {
         name: `${routeConf.requestName}New`,
-        path: `${routeConf.requestPath}new`,
+        path: `${routeConf.requestPath}view/new`,
         component: ViewFormPurchaseRequest,
         redirect: {
             name: `${routeConf.requestName}newItems`
@@ -54,6 +54,31 @@ const routes = [
                 meta: {
                     requiredAuth: true,
                     requiredProfiles: ['admin', 'common']
+                },
+            }
+        ]
+    },
+    {
+        name: `${routeConf.requestName}View`,
+        path: `${routeConf.requestPath}view/:id`,
+        component: ViewFormPurchaseRequest,
+        redirect: {
+            name: `${routeConf.requestName}items`
+        },
+        meta: {
+            requiredAuth: true,
+            requiredProfiles: ['admin', 'common'],
+            scroll: {x: 0, y: 0}
+        },
+        children: [
+            {
+                path: 'items',
+                name: `${routeConf.requestName}items`,
+                component: ViewListPurchaseItem,
+                meta: {
+                    requiredAuth: true,
+                    requiredProfiles: ['admin', 'common'],
+                    scroll: {x: 0, y: 0}
                 },
             }
         ]
@@ -155,7 +180,10 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes
+    routes,
+    scrollBehavior(to, from, position) {
+        return {...to.meta.scroll ?? {}, ...{behavior: 'smooth',}} ?? position
+    }
 })
 
 router.beforeResolve((to, from, next) => {
@@ -163,8 +191,7 @@ router.beforeResolve((to, from, next) => {
     //Está no perfil exigido? Está autenticado?
     if (to.meta?.requiredProfiles?.includes(person.profile.description) && to.meta?.requiredAuth === person.authed) {
         next()
-    }
-    else {
+    } else {
         console.warn('cannot on beforeResolve')
         next({
             name: 'home'

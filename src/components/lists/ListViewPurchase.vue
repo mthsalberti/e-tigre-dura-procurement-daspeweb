@@ -5,15 +5,31 @@
         :loading="isLoading"
         :headers="headers"
         :items="items"
+        item-key="id"
         hide-default-footer
     >
       <template v-slot:top>
         <component :is="componentFilter"/>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon v-text="'reply'" small class="mr-2" @click="handleClickShareAction(item)"/>
-        <v-icon v-text="'edit'" small class="mr-2" @click="handleClickEditAction(item)"/>
-        <v-icon v-text="'delete'" small class="mr-2" @click="handleClickDeleteAction(item)"/>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon small color="primary" v-on="on" v-bind="attrs" @click="handleClickShareAction(item)">reply</v-icon>
+          </template>
+          <span v-text="$t('share')"/>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon small color="primary" v-on="on" v-bind="attrs" @click="handleClickEditAction(item)">edit</v-icon>
+          </template>
+          <span v-text="$t('edit')"/>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon small color="primary" v-on="on" v-bind="attrs" @click="handleClickDeleteAction(item)">delete</v-icon>
+          </template>
+          <span v-text="$t('delete')"/>
+        </v-tooltip>
       </template>
       <template v-slot:no-data>
         {{ $t('noItems') }}
@@ -35,6 +51,7 @@
 import filling from "@/components/app/filling";
 import {mapActions, mapState} from 'vuex'
 import FilterPurchase from "@/components/filters/FilterPurchase";
+import {routeConf} from "@/router";
 
 export default {
   name: "ListViewPurchase",
@@ -42,11 +59,8 @@ export default {
     filling,
     FilterPurchase,
   },
-  updated() {
-    // this.setup()
-  },
   watch: {
-    $route () {
+    $route() {
       this.setup()
     }
   },
@@ -55,7 +69,7 @@ export default {
   },
   data() {
     return {
-      headers: Array /*{text, value, divider}*/,
+      headers: [] /*{text, value}*/,
       fields: Array,
       key: String,
       linkActionButton: null,
@@ -74,9 +88,9 @@ export default {
     }),
   },
   methods: {
-    async setup(){
+    async setup() {
       try {
-        await this.clearState()
+        // await this.clearState()
         this.handleGetData()
       } catch (e) {
         console.error('ERROR ON MOUNT ListViewPurchase', e)
@@ -88,6 +102,9 @@ export default {
       },
       handleGetData(dispatch) {
         return dispatch(this.getPathStore('handleGetData'))
+      },
+      removeItem(dispatch, payload) {
+        return dispatch(this.getPathStore('removeItem'), payload)
       }
     }),
     getPathStore(propName) {
@@ -97,9 +114,14 @@ export default {
     /* only to build layout */
     handleClickShareAction() {
     },
-    handleClickEditAction() {
+    handleClickEditAction(item) {
+      this.$router.push({
+        path: `${routeConf.requestPath}view/${item.id}`
+      })
     },
-    handleClickDeleteAction() {
+    async handleClickDeleteAction(item) {
+      await this.removeItem({id: item.id})
+      this.handleGetData()
     },
   }
 }

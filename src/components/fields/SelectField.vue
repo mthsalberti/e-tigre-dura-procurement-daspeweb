@@ -1,19 +1,25 @@
 <template>
-  <v-autocomplete
-      :label="label"
-      cache-items
-      solo
-      hide-no-data
-      hide-details
-      :no-data-text="$t('noInformation')"
-      v-model="selected"
-      :items="items"
-      :item-text="itemText"
-      :item-value="itemValue"
-      :search-input.sync="term"
-      :loading="isLoading"
-      return-object
-  />
+  <div>
+    <label v-text="label"/>
+    <v-autocomplete
+        :label="label"
+        cache-items
+        solo
+        hide-no-data
+        hide-details
+        :no-data-text="$t('noInformation')"
+        v-model="selected"
+        :items="items"
+        :item-text="itemText"
+        :item-value="itemValue"
+        :search-input.sync="term"
+        :loading="isLoading"
+        return-object
+        :disabled="disabled"
+        :required="required"
+        :rules="mainRules"
+    />
+  </div>
 </template>
 
 <script>
@@ -41,9 +47,27 @@ export default {
     itemValue: {
       type: String,
       default: () => 'id'
+    },
+    sendToStore: {
+      type: Boolean,
+      default: () => false
+    },
+    disabled: {
+      type: Boolean,
+      default: () => false
+    },
+    initialValue: {
+      type: Object,
+      required: false,
+      default: () => null
+    },
+    required: {
+      type: Boolean,
+      required: false,
+      default: () => false
     }
   },
-  data(){
+  data() {
     return {
       term: null,
       timer: null,
@@ -51,38 +75,63 @@ export default {
     }
   },
   watch: {
-    term(value){
+    term(value) {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => this.handleSearch({value}), this.debounce)
     },
     selected(item){
-      this.$emit('select-item', item)
+      if (this.sendToStore) {
+        this.handleSetSelectedItem({item})
+      }
+      else {
+        this.$emit('select-item', item)
+      }
     }
   },
   computed: {
     ...mapState({
-      items(_, getters){
+      items(_, getters) {
         return getters[this.getPathStore('getItems')]
       },
-      isLoading(_, getters){
+      isLoading(_, getters) {
         return getters[this.getPathStore('getLoading')]
       },
-      selectedItem(_, getters){
+      selectedItem(_, getters) {
         return getters[this.getPathStore('getSelectedItem')]
       },
     }),
+    mainRules(){
+      return [
+        v => (!!v && this.required) || this.$t('fieldRequired')
+      ]
+    }
+  },
+  mounted() {
+    this.setup()
   },
   methods: {
-    setup(){
-      this.selected = this.selectedItem
+    setup() {
+      console.log('selected', this.selected)
+      console.log('this.initialValue', this.initialValue)
+      if (this.sendToStore) {
+        this.selected = this.selectedItem
+      }
+      else if (this.initialValue ) {
+        this.selected = this.initialValue
+        this.items.push(this.initialValue)
+      }
+
     },
     getPathStore(propName) {
       return `${this.storePath}Store/${propName}`
     },
     ...mapActions({
-      handleSearch(dispatch, payload){
+      handleSearch(dispatch, payload) {
         return dispatch(this.getPathStore('handleSearch'), payload)
-      }
+      },
+      handleSetSelectedItem(dispatch, payload) {
+        return dispatch(this.getPathStore('handleSetSelectedItem'), payload)
+      },
     }),
   }
 }

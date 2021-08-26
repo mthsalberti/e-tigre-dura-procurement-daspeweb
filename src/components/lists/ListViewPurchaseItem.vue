@@ -5,8 +5,9 @@
       <v-card-title v-text="$t('items')"/>
       <div v-if="items && items.length">
         <view-purchase-item
+            ref="purchaseItemRef"
             v-for="(pi, i) in items"
-            :key="`purchase-item-${pi.id}-${i}`"
+            :key="`purchase-item-${pi}-${i}`"
             :item="pi"
             @removePurchaseItem="handleClickRemovePurchaseItem"
         />
@@ -33,7 +34,8 @@ export default {
   },
   data() {
     return {
-      path: String
+      path: String,
+      purchaseId: null
     }
   },
   computed: {
@@ -48,8 +50,12 @@ export default {
   },
   methods: {
     async setup() {
+      this.purchaseId = this.$route.params.id
+      console.log('this.pruchaseId', this.purchaseId)
       await this.clearState()
-      this.handleGetData()
+      if (this.purchaseId) {
+        this.handleGetData({purchaseId: this.purchaseId})
+      }
     },
     ...mapActions({
       handleGetData(dispatch, payload) {
@@ -69,15 +75,26 @@ export default {
       return `${this.path}Store/${propName}`
     },
     handleClickAddPurchaseItem() {
-      this.handleAddItem({item: {id: 'show'}})
+      this.handleAddItem({item: {
+          description: null,
+          quantity: null,
+          unit_of_measurement: null,
+          unit_cost: null,
+          total_cost: null,
+        }})
     },
     handleClickRemovePurchaseItem(item) {
       this.handleRemoveItem({item})
+    },
+    async validate(){
+      let isValid = true;
+      let itemsForm = this.$refs.purchaseItemRef ?? []
+      for (let i = 0; i < itemsForm.length; i++) {
+        isValid = await itemsForm[i].$refs.formPurchaseItem.validate()
+        if (!isValid) break
+      }
+      return isValid
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

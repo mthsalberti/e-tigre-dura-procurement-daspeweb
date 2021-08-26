@@ -1,4 +1,4 @@
-import {ITEMS, SELECTED_ITEM, LOADING, STATE} from '../types'
+import {ITEMS, SELECTED_ITEM, LOADING, STATE, ADD_FILTER_ITEM} from '../types'
 import {defaultState} from "@/store/state";
 import Request from "plugin-tigre-request";
 
@@ -20,42 +20,53 @@ export default {
         [ITEMS](state, items) {
             state.items = items
         },
-        [SELECTED_ITEM](state, payload) {
-            state.selectedItem = payload.selectedItem
+        [SELECTED_ITEM](state, item) {
+            state.selectedItem = item
         },
         [LOADING](state, isLoading /* boolean */) {
             state.isLoading = isLoading
         },
         [STATE](state, newState) {
             state = newState
+        },
+        [ADD_FILTER_ITEM](state, item) {
+            state.filter.add(item)
         }
     },
     actions: {
-        clearState({commit}){
+        clearState({commit}) {
             commit(STATE, defaultState())
         },
-        async handleSearch({commit}, payload = {}) {
+        async handleSearch({commit, state}, payload = {}) {
             try {
                 let {value} = payload
-                console.log('value', value)
+
+                //setting filter
+                await commit(ADD_FILTER_ITEM, {
+                    name: 'term',
+                    field: 'name',
+                    operator: 'like',
+                    value: `%${value}%`
+                })
+
                 if (value) {
                     commit(LOADING, true)
                     let response = await Request({
                         baseUrl: process.env.VUE_APP_BASE_URL,
-                        path: '/api/vendor'
+                        path: `/vendor?where=${state.filter.query()}`
                     })
-                    commit(ITEMS, response.data)
-                }
-                else {
+                    commit(ITEMS, response.data.data)
+                } else {
                     commit(ITEMS, [])
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 console.error('error on get', e)
-            }
-            finally {
+            } finally {
                 commit(LOADING, false)
             }
+        },
+        handleSetSelectedItem({commit}, payload) {
+            commit(SELECTED_ITEM, payload.item)
         }
     }
 }

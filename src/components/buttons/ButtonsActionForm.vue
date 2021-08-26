@@ -1,9 +1,9 @@
 <template>
   <v-row>
     <slot/>
-    <v-btn class="mr-md-2" v-text="saveLabel" color="success" @click="defaultMethod('Save')" v-if="!hideSaveButton"/>
-    <v-btn class="mr-md-2" v-text="rejectLabel" color="error" outlined @click="defaultMethod('Reject')" v-if="!hideRejectButton"/>
-    <v-btn class="mr-md-2" v-text="cancelLabel" color="warning" outlined @click="defaultMethod('Cancel')" v-if="!hideCancelButton"/>
+    <v-btn class="mr-md-2" v-text="saveLabel" color="success" @click="defaultMethod('save')" v-if="!hideSaveButton"/>
+    <v-btn class="mr-md-2" v-text="rejectLabel" color="error" outlined @click="defaultMethod('reject')" v-if="!hideRejectButton"/>
+    <v-btn class="mr-md-2" v-text="cancelLabel" color="warning" outlined @click="defaultMethod('cancel')" v-if="!hideCancelButton"/>
   </v-row>
 </template>
 <script>
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     defaultMethod(methodName) {
-      this.$emit(`click${methodName}`)
+      this.$emit(`click-${methodName}`)
     }
   },
 }

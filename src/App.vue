@@ -4,7 +4,9 @@
 
     <v-main>
       <div class="pa-2">
-        <router-view/>
+        <transition name="fade" mode="out-in">
+          <router-view/>
+        </transition>
       </div>
     </v-main>
   </v-app>
@@ -18,7 +20,7 @@ import user from "@/mock/user";
 
 export default {
   name: 'App',
-  data(){
+  data() {
     return {
       user: {}
     }
@@ -30,41 +32,40 @@ export default {
     this.user = user.find(e => e.authed)
   },
   computed: {
-    menuItems(){
+    menuItems() {
       /* config template
       * {title, icon, link}
       * */
       if (this.user.profile?.description === 'admin') {
         return this.menuItemsAdmin
-      }
-      else {
+      } else {
         return this.menuItemsCommon
       }
     },
-    menuItemsAdmin(){
+    menuItemsAdmin() {
       return [
-          ...this.menuItemsCommon,
-          ...[
-            {
-              icon: 'schedule',
-              link: `${routeConf.orderPath}toOrder`
-            },
-            {
-              icon: 'mode_edit',
-              link: `${routeConf.orderPath}draft`
-            },
-            {
-              icon: 'lock_open',
-              link: `${routeConf.requestPath}toApproval`
-            },
-            {
-              icon: 'shopping_cart',
-              link: `${routeConf.requestPath}approved`
-            }
-          ]
+        ...this.menuItemsCommon,
+        ...[
+          {
+            icon: 'schedule',
+            link: `${routeConf.orderPath}toOrder`
+          },
+          {
+            icon: 'mode_edit',
+            link: `${routeConf.orderPath}draft`
+          },
+          {
+            icon: 'lock_open',
+            link: `${routeConf.requestPath}toApproval`
+          },
+          {
+            icon: 'shopping_cart',
+            link: `${routeConf.requestPath}approved`
+          }
+        ]
       ]
     },
-    menuItemsCommon(){
+    menuItemsCommon() {
       return [
         {
           icon: 'folder_open',

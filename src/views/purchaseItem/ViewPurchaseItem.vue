@@ -1,23 +1,28 @@
 <template>
-  <v-form :disabled="disabled">
+  <v-form ref="formPurchaseItem" :disabled="disabled">
     <v-row align="center">
       <v-col md="3" sm="12">
-        <v-text-field hide-details :label="$t('description')" solo v-model="item.description"/>
+        <label v-text="$t('description')"/>
+        <v-text-field hide-details solo v-model="item.description" required/>
       </v-col>
       <v-col md="1" sm="12">
-        <v-text-field hide-details :label="$t('quantity')" solo v-model="item.quantity"/>
+        <label v-text="$t('quantity')"/>
+        <v-text-field hide-details type="number" solo v-model="item.quantity" required/>
       </v-col>
       <v-col md="1" sm="12">
-        <v-text-field hide-details :label="$t('unit')" solo v-model="item.unit_of_measurement"/>
+        <label v-text="$t('unit')"/>
+        <v-text-field hide-details solo v-model="item.unit_of_measurement" required/>
       </v-col>
       <v-col md="1" sm="12">
-        <v-text-field hide-details :label="$t('unitCost')" solo v-model="item.unit_cost"/>
+        <label v-text="$t('unitCost')"/>
+        <v-text-field hide-details type="number" solo v-model="item.unit_cost" required/>
       </v-col>
       <v-col md="2" sm="12">
-        <v-text-field hide-details :label="$t('totalCost')" solo v-model="item.total_cost"/>
+        <label v-text="$t('totalCost')"/>
+        <v-text-field hide-details type="number" solo v-model="item.total_cost" required readonly/>
       </v-col>
       <v-col md="3" sm="12">
-        <select-field :label="$t('department')" store-path="department" />
+        <select-field :label="$t('department')" store-path="department" required/>
       </v-col>
       <v-col md="1" sm="12">
         <v-btn outlined color="#fff" @click="handleClickToRemovePurchaseItem">
@@ -44,7 +49,18 @@ export default {
       default: () => false
     }
   },
+  mounted() {
+    this.setup()
+  },
   methods: {
+    setup(){
+      this.$watch('item.quantity', function(newValue) {
+        this.item.total_cost = (newValue * this.item.unit_cost)
+      })
+      this.$watch('item.unit_cost', function(newValue) {
+        this.item.total_cost = (newValue * this.item.quantity)
+      })
+    },
     handleClickToRemovePurchaseItem(){
       this.$emit('removePurchaseItem', this.item)
     }
