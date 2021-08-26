@@ -1,0 +1,96 @@
+service: etigre-dura-procurement-frontend
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${env:AWS_STAGE}
+  region: ${env:AWS_REGION}
+
+plugins:
+  - serverless-finch
+  - serverless-cloudfront-invalidate
+
+custom:
+  s3LocalPath: dist
+  s3Bucket: ${env:AWS_S3_BUCKET_NAME}
+  client:
+    bucketName: ${self:provider.stage}-${self:custom.s3Bucket}
+    distributionFolder: dist
+    indexDocument: index.html
+    errorDocument: index.html
+  cloudfrontInvalidate:
+    - distributionIdKey: 'CDNDistributionId'
+      autoInvalidate: false
+      items:
+        - '/*'
+
+resources:
+  Resources:
+    WebAppS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.stage}-${self:custom.s3Bucket}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    WebAppS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebAppS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: '*'
+              Action:
+                - s3:GetObject
+              Resource:
+                Fn::Join: [ '', [ 'arn:aws:s3:::', { 'Ref': 'WebAppS3Bucket' }, '/*' ] ]
+    WebAppCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName:
+                Fn::Join: [ '', [ { 'Ref': 'WebAppS3Bucket' }, '.s3.amazonaws.com' ] ]
+              Id: WebApp
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            TargetOriginId: WebApp
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: 'true'
+  Outputs:
+    WebAppS3BucketOutput:
+      Value:
+        'Ref': WebAppS3Bucket
+    WebAppCloudFrontDistributionOutput:
+      Value:
+        'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+    CDNDistributionId:
+      Description: CDN distribution id.
+      Value:
+        Ref: WebAppCloudFrontDistribution
