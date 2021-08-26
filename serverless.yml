@@ -1,5 +1,6 @@
 service: etigre-dura-procurement-frontend
 
+
 provider:
   name: aws
   runtime: nodejs12.x
