@@ -91,7 +91,7 @@ export default {
     async setup() {
       try {
         // await this.clearState()
-        this.handleGetData()
+        await this.handleGetData()
       } catch (e) {
         console.error('ERROR ON MOUNT ListViewPurchase', e)
       }
