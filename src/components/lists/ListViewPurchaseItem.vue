@@ -9,6 +9,7 @@
             v-for="(pi, i) in items"
             :key="`purchase-item-${pi}-${i}`"
             :item="pi"
+            @change-department="handleChangeDepartment"
             @removePurchaseItem="handleClickRemovePurchaseItem"
         />
       </div>
@@ -29,8 +30,8 @@ export default {
   components: {
     ViewPurchaseItem
   },
-  mounted() {
-    this.setup()
+  async mounted() {
+    await this.setup()
   },
   data() {
     return {
@@ -54,7 +55,7 @@ export default {
       console.log('this.pruchaseId', this.purchaseId)
       await this.clearState()
       if (this.purchaseId) {
-        this.handleGetData({purchaseId: this.purchaseId})
+        await this.handleGetData({purchaseId: this.purchaseId})
       }
     },
     ...mapActions({
@@ -69,7 +70,10 @@ export default {
       },
       handleRemoveItem(dispatch, payload) {
         return dispatch(this.getPathStore('handleRemoveItem'), payload)
-      }
+      },
+      handleUpdateItem(dispatch, payload) {
+        return dispatch(this.getPathStore('handleUpdateItem'), payload)
+      },
     }),
     getPathStore(propName) {
       return `${this.path}Store/${propName}`
@@ -87,6 +91,12 @@ export default {
     },
     handleClickRemovePurchaseItem(item) {
       this.handleRemoveItem({item})
+    },
+    handleChangeDepartment({item, department}){
+      this.handleUpdateItem({
+        current: item,
+        replace: {department_id: department.id, department_description: department.description}
+      })
     },
     async validate(){
       let isValid = true;

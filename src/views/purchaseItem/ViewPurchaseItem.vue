@@ -22,7 +22,7 @@
         <v-text-field hide-details type="number" solo v-model="item.total_cost" required readonly/>
       </v-col>
       <v-col md="3" sm="12">
-        <select-field :label="$t('department')" store-path="department" @select-field="handleChangeDepartment" :initial-value="{id: item.department_id, description: item.department_description}" required/>
+        <select-field :label="$t('department')" item-text="description" store-path="department" @select-item="handleChangeDepartment" :initial-value="{id: item.department_id, description: item.department_description}" required/>
       </v-col>
       <v-col md="1" sm="12">
         <v-btn outlined color="#fff" @click="handleClickToRemovePurchaseItem">
@@ -64,8 +64,11 @@ export default {
     handleClickToRemovePurchaseItem(){
       this.$emit('removePurchaseItem', this.item)
     },
-    handleChangeDepartment(item){
-      this.item['department_id'] = item.id
+    handleChangeDepartment(department){
+      this.$emit('change-department', {
+        item: this.item,
+        department
+      })
     }
   }
 }

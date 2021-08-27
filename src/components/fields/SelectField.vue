@@ -41,11 +41,9 @@ export default {
       required: true
     },
     itemText: {
-      type: String,
       default: () => 'description'
     },
     itemValue: {
-      type: String,
       default: () => 'id'
     },
     sendToStore: {
@@ -69,18 +67,13 @@ export default {
   },
   data() {
     return {
-      term: null,
+      term: '',
       timer: null,
-      selected: null
+      selected: null,
+      searchEnabled: false
     }
   },
   watch: {
-    term(value) {
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.handleSearch({value})
-      }, 500)
-    },
     selected(item){
       if (this.sendToStore) {
         this.handleSetSelectedItem({item})
@@ -113,8 +106,6 @@ export default {
   },
   methods: {
     setup() {
-      console.log('selected', this.selected)
-      console.log('this.initialValue', this.initialValue)
       if (this.sendToStore) {
         this.selected = this.selectedItem
       }
@@ -122,7 +113,16 @@ export default {
         this.selected = this.initialValue
         this.items.push(this.initialValue)
       }
+      this.$watch('term', function(value){
+        if (this.searchEnabled) {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            this.handleSearch({value})
+          }, 500)
+        }
 
+        this.searchEnabled = true
+      })
     },
     getPathStore(propName) {
       return `${this.storePath}Store/${propName}`

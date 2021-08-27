@@ -1,4 +1,4 @@
-import {ITEMS, SELECTED_ITEM, LOADING, STATE, ADD_ITEM, REMOVE_ITEM, ADD_FILTER_ITEM} from '../types'
+import {ITEMS, SELECTED_ITEM, LOADING, STATE, ADD_ITEM, REMOVE_ITEM, ADD_FILTER_ITEM, UPDATE_ITEM} from '../types'
 import {defaultState} from "@/store/state";
 import Request from "plugin-tigre-request";
 import axios from "axios";
@@ -41,6 +41,12 @@ export default {
         },
         [ADD_FILTER_ITEM](state, item) {
             state.filter.add(item)
+        },
+        [UPDATE_ITEM](state, {current, replace}) {
+            console.log('state', state)
+            console.log('current', current)
+            console.log('replace', replace)
+            state.items[state.items.indexOf(current)] = {...current, ...replace}
         }
     },
     actions: {
@@ -51,18 +57,12 @@ export default {
             try {
                 commit(LOADING, true)
                 let {purchaseId} = payload
-                await commit(ADD_FILTER_ITEM, {
-                    name: 'purchaseId',
-                    field: 'purchase_id',
-                    operator: '=',
-                    value: purchaseId
-                })
                 let response = await Request({
                     baseUrl: process.env.VUE_APP_BASE_URL,
                     path: `/custom/purchase_item_from_purchase/${purchaseId}`
                 })
-                console.log('response', response)
-                commit(ITEMS, response.data[0])
+                console.log('response.data[0] purchaseItem', response.data[0])
+                await commit(ITEMS, response.data[0])
             } catch (e) {
                 console.error('error on get', e)
             } finally {
@@ -77,12 +77,19 @@ export default {
         },
         async handleAddItems(_, payload) {
             let {items} = payload
-            items = items.map(i => {
+            items = await Promise.all(items.map(i => {
                 delete i['department_description']
-                return i
-            })
+                return new Promise(resolve => resolve(i))
+            }))
+            console.log('items', items)
             let response = await axios.put(`${process.env.VUE_APP_BASE_URL}/purchase_item`, items)
             return response.data
+        },
+        handleUpdateItem({commit}, payload) {
+            let {current, replace} = payload
+            console.log('current handleUpdateItem', current)
+            console.log('replace handleUpdateItem', replace)
+            commit(UPDATE_ITEM, {current, replace})
         }
     }
 }

@@ -37,7 +37,7 @@ export default {
         clearState({commit}){
             commit(STATE, defaultState())
         },
-        async handleSearch({commit, state}, payload = {}) {
+        async handleSearch({commit}, payload = {}) {
             try {
                 let {value} = payload
                 //setting filter
@@ -52,9 +52,9 @@ export default {
                     commit(LOADING, true)
                     let response = await Request({
                         baseUrl: process.env.VUE_APP_BASE_URL,
-                        path: `/user?where=${state.filter.query()}`
+                        path: `/search/user/name/${value}`
                     })
-                    commit(ITEMS, response.data.data)
+                    commit(ITEMS, response.data)
                 }
                 else {
                     commit(ITEMS, [])

@@ -41,21 +41,13 @@ export default {
             try {
                 let {value} = payload
 
-                //setting filter
-                await commit(ADD_FILTER_ITEM, {
-                    name: 'term',
-                    field: 'description',
-                    operator: 'like',
-                    value: `%${value}%`
-                })
-
                 if (value) {
                     commit(LOADING, true)
                     let response = await Request({
                         baseUrl: process.env.VUE_APP_BASE_URL,
-                        path: `/department?where=${state.filter.query()}`
+                        path: `/search/department/description/${value}`
                     })
-                    commit(ITEMS, response.data.data)
+                    commit(ITEMS, [...state.items, ...response.data])
                 }
                 else {
                     commit(ITEMS, [])

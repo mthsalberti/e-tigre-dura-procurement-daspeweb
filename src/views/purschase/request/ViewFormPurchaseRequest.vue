@@ -171,6 +171,7 @@ export default {
         'requested_by_name',
         'created_by_name',
         'designated_receiver_name',
+        'department_description'
       ]
     }
   },
@@ -245,6 +246,7 @@ export default {
         } else {
           let purchaseToUpsert = await this.treatPurchaseToUpsert()
           let idInsertedPurchase = await this.addItem({item: purchaseToUpsert})
+          if (idInsertedPurchase === 0) idInsertedPurchase = purchaseToUpsert.id
           await this.addPurchaseItems({
             items: this.purchaseItems.map(e => {
               e['purchase_id'] = idInsertedPurchase

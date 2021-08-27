@@ -166,6 +166,7 @@ export default {
             try {
                 let {item} = payload
                 let response = await axios.put(`${process.env.VUE_APP_BASE_URL}/purchase`, item)
+                console.log('response', response)
                 return response.data.data[0]
             }
             catch (e) {

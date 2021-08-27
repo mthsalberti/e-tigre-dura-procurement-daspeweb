@@ -37,25 +37,16 @@ export default {
         clearState({commit}) {
             commit(STATE, defaultState())
         },
-        async handleSearch({commit, state}, payload = {}) {
+        async handleSearch({commit}, payload = {}) {
             try {
                 let {value} = payload
-
-                //setting filter
-                await commit(ADD_FILTER_ITEM, {
-                    name: 'term',
-                    field: 'name',
-                    operator: 'like',
-                    value: `%${value}%`
-                })
-
                 if (value) {
                     commit(LOADING, true)
                     let response = await Request({
                         baseUrl: process.env.VUE_APP_BASE_URL,
-                        path: `/vendor?where=${state.filter.query()}`
+                        path: `/search/vendor/name/${value}`
                     })
-                    commit(ITEMS, response.data.data)
+                    commit(ITEMS, response.data)
                 } else {
                     commit(ITEMS, [])
                 }
